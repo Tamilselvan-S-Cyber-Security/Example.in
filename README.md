@@ -596,11 +596,21 @@ classDiagram
 ## Use Case Diagram
 ```mermaid
 graph LR
-  "Operator" --> "Configure Detection"
-  "Operator" --> "View Live Feed"
-  "Operator" --> "Receive Alerts"
-  "Operator" --> "Export Logs"
-  "Operator" --> "Test Email Alerts"
+    Operator[Operator]
+
+    subgraph System["Detection & Monitoring System"]
+        UC1[Configure Detection]
+        UC2[View Live Feed]
+        UC3[Receive Alerts]
+        UC4[Export Logs]
+        UC5[Test Email Alerts]
+    end
+
+    Operator --> UC1
+    Operator --> UC2
+    Operator --> UC3
+    Operator --> UC4
+    Operator --> UC5
 ```
 
 ---
