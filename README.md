@@ -487,17 +487,17 @@ Email Alert Settings
 
 ## Architectural Diagram (High-Level)
 ```mermaid
-flowchart LR
-  U[User (Operator)] -->|Configures| UI[Streamlit UI (app.py)]
-  CAM[Camera (Webcam/IP/Demo)] -->|Frames| CAP[OpenCV Capture]
-  CAP -->|Frame| DET[Detection Engine (YOLO + process_frame)]
-  DET -->|Annotated Frame| UI
-  DET -->|Detections| ALERT[Alert System (beep + TTS)]
-  DET -->|Detections| LOG[Logger (CSV)]
-  DET -->|Detections + Snapshot| STORE[(Detections Folder)]
-  DET -->|Detections| EMAIL[Email Alert (EmailJS API)]
-  LOG --> DATA[(data/detection_log.csv)]
-  UI -->|Exports| EXP[CSV Export]
+graph LR
+  U["User (Operator)"] -->|"Configures"| UI["Streamlit UI (app.py)"]
+  CAM["Camera Source (Webcam / IP / Demo)"] -->|"Frames"| CAP["OpenCV Capture"]
+  CAP -->|"Frame"| DET["Detection Engine (YOLO + process_frame)"]
+  DET -->|"Annotated Frame"| UI
+  DET -->|"Detections"| ALERT["Alert System (Beep + TTS)"]
+  DET -->|"Detections"| LOG["Logger (CSV)"]
+  DET -->|"Snapshot"| STORE["Detections Folder"]
+  DET -->|"Detections"| EMAIL["Email Alert (EmailJS API)"]
+  LOG --> DATA["data/detection_log.csv"]
+  UI -->|"Exports"| EXP["CSV Export"]
 ```
 
 ---
@@ -506,46 +506,46 @@ flowchart LR
 
 ### Level 0 (Context Diagram)
 ```mermaid
-flowchart LR
-  Operator[Operator] -->|Settings / Target| System((Criminal Stopper System))
-  Camera[Camera Feed] -->|Video Frames| System
-  System -->|Alerts (Audio/Voice/Email)| Operator
-  System -->|Logs / Snapshots| Storage[(CSV + Images)]
+graph LR
+  Operator["Operator"] -->|"Settings and Target"| System(("Criminal Stopper System"))
+  Camera["Camera Feed"] -->|"Video Frames"| System
+  System -->|"Alerts (Audio, Voice, Email)"| Operator
+  System -->|"Logs and Snapshots"| Storage["Storage (CSV and Images)"]
 ```
 
 ### Level 1 (Major Processes)
 ```mermaid
-flowchart LR
-  Camera[Camera Feed] --> P1[1. Capture Frames]
-  Operator[Operator] --> P4[4. Configure Settings]
-
-  P1 --> P2[2. Detect Objects]
+graph LR
+  Camera["Camera Feed"] --> P1["1. Capture Frames"]
+  Operator["Operator"] --> P4["4. Configure Settings"]
+ 
+  P1 --> P2["2. Detect Objects"]
   P4 --> P2
-
-  P2 --> P3[3. Generate Outputs]
-
+ 
+  P2 --> P3["3. Generate Outputs"]
+ 
   P3 --> Operator
-  P3 --> D1[(D1: Detection Log CSV)]
-  P3 --> D2[(D2: Detection Images)]
-  P3 --> Ext[EmailJS Service]
+  P3 --> D1["D1: Detection Log CSV"]
+  P3 --> D2["D2: Detection Images"]
+  P3 --> Ext["EmailJS Service"]
 ```
 
 ### Level 2 (Decomposition of Detection + Output)
 ```mermaid
-flowchart LR
-  subgraph P2[2. Detect Objects]
-    A[2.1 Load YOLO Model] --> B[2.2 Run Inference]
-    B --> C[2.3 Filter by Confidence]
-    C --> D[2.4 Filter by Target Class]
-    D --> E[2.5 Draw Boxes & Labels]
-    E --> F[2.6 Produce Detections List]
+graph LR
+  subgraph P2["2. Detect Objects"]
+    A["2.1 Load YOLO Model"] --> B["2.2 Run Inference"]
+    B --> C["2.3 Filter by Confidence"]
+    C --> D["2.4 Filter by Target Class"]
+    D --> E["2.5 Draw Boxes and Labels"]
+    E --> F["2.6 Produce Detections List"]
   end
-
-  subgraph P3[3. Generate Outputs]
-    G[3.1 Trigger Audio Alert] --> H[3.2 TTS Announcement]
-    F --> I[3.3 Write CSV Log]
-    F --> J[3.4 Save Snapshot]
-    F --> K[3.5 Send Email Notification]
+ 
+  subgraph P3["3. Generate Outputs"]
+    G["3.1 Trigger Audio Alert"] --> H["3.2 TTS Announcement"]
+    F --> I["3.3 Write CSV Log"]
+    F --> J["3.4 Save Snapshot"]
+    F --> K["3.5 Send Email Notification"]
   end
 ```
 
@@ -595,19 +595,12 @@ classDiagram
 
 ## Use Case Diagram
 ```mermaid
-flowchart LR
-  Operator((Operator))
-  UC1[Configure Detection]
-  UC2[View Live Feed]
-  UC3[Receive Alerts]
-  UC4[Export Logs]
-  UC5[Test Email Alerts]
-
-  Operator --> UC1
-  Operator --> UC2
-  Operator --> UC3
-  Operator --> UC4
-  Operator --> UC5
+graph LR
+  "Operator" --> "Configure Detection"
+  "Operator" --> "View Live Feed"
+  "Operator" --> "Receive Alerts"
+  "Operator" --> "Export Logs"
+  "Operator" --> "Test Email Alerts"
 ```
 
 ---
